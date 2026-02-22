@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Queens Hotel | Queens, New York</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A96E;
+    --gold-light: #E8D5B0;
+    --dark: #0D0D0D;
+    --deep: #111418;
+    --charcoal: #1E2228;
+    --mid: #2C3340;
+    --muted: #8A8F99;
+    --light: #F5F2EE;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--dark);
+    color: var(--light);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 60px;
+    background: linear-gradient(to bottom, rgba(13,13,13,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+    transition: background 0.4s;
+  }
+  nav.scrolled { background: rgba(13,13,13,0.97); }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 500; letter-spacing: 3px;
+    color: var(--gold); text-transform: uppercase; text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--light); text-decoration: none; font-weight: 300;
+    opacity: 0.8; transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-cta {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 10px 24px; border: 1px solid var(--gold);
+    color: var(--gold); text-decoration: none; font-weight: 400;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--dark); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; height: 100vh; min-height: 700px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      linear-gradient(to bottom, rgba(13,13,13,0.55) 0%, rgba(13,13,13,0.3) 40%, rgba(13,13,13,0.75) 100%),
+      url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600&q=80') center/cover no-repeat;
+  }
+  .hero-bg::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(13,13,13,0.4) 100%);
+  }
+  .hero-content { position: relative; text-align: center; padding: 0 20px; }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
+    color: var(--gold); font-weight: 300; margin-bottom: 24px;
+    animation: fadeUp 1s ease both;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 9vw, 110px); font-weight: 300; line-height: 0.95;
+    letter-spacing: -1px; color: var(--white); margin-bottom: 12px;
+    animation: fadeUp 1s ease 0.15s both;
+  }
+  .hero-title em { font-style: italic; color: var(--gold-light); }
+  .hero-subtitle {
+    font-size: 13px; letter-spacing: 3px; color: var(--gold-light);
+    text-transform: uppercase; font-weight: 200; margin-bottom: 48px;
+    animation: fadeUp 1s ease 0.3s both;
+  }
+  .hero-actions { display: flex; gap: 16px; justify-content: center; animation: fadeUp 1s ease 0.45s both; }
+  .btn-primary {
+    padding: 16px 44px; background: var(--gold); color: var(--dark);
+    font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+    text-decoration: none; font-weight: 500; transition: background 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline {
+    padding: 16px 44px; border: 1px solid rgba(255,255,255,0.4); color: var(--white);
+    font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+    text-decoration: none; font-weight: 300; transition: border-color 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    animation: fadeUp 1s ease 0.6s both;
+  }
+  .hero-scroll span { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* ─── STATS BAR ─── */
+  .stats-bar {
+    background: var(--charcoal);
+    border-top: 1px solid rgba(201,169,110,0.2);
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+    display: flex; justify-content: center;
+  }
+  .stats-item {
+    padding: 28px 60px; text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .stats-item:last-child { border-right: none; }
+  .stats-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 400; color: var(--gold); display: block;
+  }
+  .stats-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+
+  /* ─── SECTION COMMON ─── */
+  section { padding: 100px 0; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .section-eyebrow {
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); font-weight: 400; margin-bottom: 16px; display: block;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px); font-weight: 300; line-height: 1.1;
+    color: var(--white); margin-bottom: 24px;
+  }
+  .section-title em { font-style: italic; color: var(--gold-light); }
+  .divider {
+    width: 60px; height: 1px; background: var(--gold); margin-bottom: 32px;
+  }
+
+  /* ─── ABOUT ─── */
+  .about { background: var(--deep); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .about-img-wrap { position: relative; }
+  .about-img {
+    width: 100%; aspect-ratio: 3/4; object-fit: cover;
+    display: block;
+    background: url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80') center/cover;
+  }
+  .about-img-accent {
+    position: absolute; bottom: -24px; right: -24px;
+    width: 180px; height: 180px;
+    background: url('https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=400&q=80') center/cover;
+    border: 6px solid var(--deep);
+  }
+  .about-badge {
+    position: absolute; top: 24px; left: -24px;
+    background: var(--gold); color: var(--dark);
+    padding: 16px 20px; text-align: center;
+  }
+  .about-badge strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500; }
+  .about-badge span { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; }
+  .about-text p {
+    color: rgba(245,242,238,0.7); line-height: 1.9; font-size: 15px;
+    font-weight: 300; margin-bottom: 20px;
+  }
+  .about-features { display: flex; gap: 32px; margin-top: 40px; }
+  .about-feature { text-align: center; }
+  .about-feature-icon { font-size: 22px; margin-bottom: 8px; }
+  .about-feature-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+
+  /* ─── ROOMS ─── */
+  .rooms { background: var(--dark); }
+  .rooms-header { text-align: center; margin-bottom: 60px; }
+  .rooms-header .divider { margin: 0 auto 32px; }
+  .rooms-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+  .room-card { position: relative; overflow: hidden; cursor: pointer; }
+  .room-card:first-child { grid-column: 1 / -1; }
+  .room-img {
+    width: 100%; display: block; transition: transform 0.6s ease;
+    background: center/cover no-repeat;
+  }
+  .room-card:first-child .room-img { height: 500px; }
+  .room-card:not(:first-child) .room-img { height: 340px; }
+  .room-card:nth-child(1) .room-img { background-image: url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80'); }
+  .room-card:nth-child(2) .room-img { background-image: url('https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&q=80'); }
+  .room-card:nth-child(3) .room-img { background-image: url('https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=800&q=80'); }
+  .room-card:nth-child(4) .room-img { background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80'); }
+  .room-card:nth-child(5) .room-img { background-image: url('https://images.unsplash.com/photo-1560185127-6a7a9a5d2b6a?w=800&q=80'); }
+  .room-card:hover .room-img { transform: scale(1.05); }
+  .room-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(13,13,13,0.92) 0%, transparent 60%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 36px;
+  }
+  .room-tag { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .room-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 400; color: var(--white); margin-bottom: 16px;
+  }
+  .room-card:first-child .room-name { font-size: 42px; }
+  .room-book {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--gold); text-decoration: none; font-weight: 400;
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .room-book::after { content: '→'; }
+  .room-card:hover .room-book { opacity: 1; transform: translateY(0); }
+
+  /* ─── AMENITIES ─── */
+  .amenities { background: var(--charcoal); }
+  .amenities-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .amenities-img {
+    position: sticky; top: 100px;
+    height: 600px;
+    background: url('https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=800&q=80') center/cover;
+  }
+  .amenity-group { margin-bottom: 48px; }
+  .amenity-group:last-child { margin-bottom: 0; }
+  .amenity-group-title {
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+  }
+  .amenity-list { display: flex; flex-wrap: wrap; gap: 10px; }
+  .amenity-tag {
+    font-size: 11px; letter-spacing: 1px; color: rgba(245,242,238,0.65);
+    padding: 6px 14px; border: 1px solid rgba(255,255,255,0.1);
+    font-weight: 300;
+  }
+
+  /* ─── LOCATION ─── */
+  .location { background: var(--deep); }
+  .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .location-address {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 300; color: var(--gold-light);
+    line-height: 1.6; margin-bottom: 32px; font-style: italic;
+  }
+  .location-desc { color: rgba(245,242,238,0.65); line-height: 1.9; font-size: 14px; font-weight: 300; }
+  .nearby-section { margin-top: 48px; }
+  .nearby-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .nearby-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .nearby-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nearby-name { font-size: 13px; color: var(--light); font-weight: 300; }
+  .nearby-dist { font-size: 11px; color: var(--gold); font-weight: 300; }
+  .map-placeholder {
+    background: var(--mid);
+    height: 500px; display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .map-placeholder iframe { width: 100%; height: 100%; border: 0; }
+
+  /* ─── CTA ─── */
+  .cta-section {
+    background: linear-gradient(135deg, var(--charcoal) 0%, var(--mid) 100%);
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: 'QUEENS';
+    position: absolute; right: -40px; top: 50%; transform: translateY(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 200px; font-weight: 300; color: rgba(201,169,110,0.04);
+    line-height: 1; pointer-events: none; white-space: nowrap;
+  }
+  .cta-inner { text-align: center; position: relative; }
+  .cta-inner .section-title { font-size: clamp(40px, 5vw, 64px); }
+  .cta-inner p { color: rgba(245,242,238,0.65); font-size: 16px; font-weight: 300; max-width: 500px; margin: 0 auto 48px; line-height: 1.8; }
+  .cta-actions { display: flex; gap: 20px; justify-content: center; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(201,169,110,0.15);
+    padding: 60px 0 30px;
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 48px; }
+  .footer-brand .nav-logo { display: block; margin-bottom: 16px; font-size: 20px; }
+  .footer-brand p { font-size: 13px; color: var(--muted); line-height: 1.8; font-weight: 300; max-width: 240px; }
+  .footer-col-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul a { font-size: 13px; color: var(--muted); text-decoration: none; font-weight: 300; transition: color 0.2s; }
+  .footer-col ul a:hover { color: var(--gold); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-bottom p { font-size: 11px; color: rgba(138,143,153,0.6); font-weight: 300; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .about-grid, .amenities-grid, .location-grid, .rooms-grid, .footer-grid { grid-template-columns: 1fr; }
+    .rooms-grid { gap: 2px; }
+    .rooms-grid .room-card:first-child { grid-column: 1; }
+    .stats-bar { flex-wrap: wrap; }
+    .stats-item { padding: 20px 30px; }
+    .nearby-grid { grid-template-columns: 1fr; }
+    .amenities-img { position: relative; top: auto; height: 300px; }
+    .about-img-accent, .about-badge { display: none; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">The Queens Hotel</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#rooms">Rooms</a></li>
+    <li><a href="#amenities">Amenities</a></li>
+    <li><a href="#location">Location</a></li>
+  </ul>
+  <a href="#book" class="nav-cta">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Queens · New York City</p>
+    <h1 class="hero-title">The <em>Queens</em><br>Hotel</h1>
+    <p class="hero-subtitle">65-15 Queens Blvd, Queens, NY 11377</p>
+    <div class="hero-actions">
+      <a href="#book" class="btn-primary">Reserve Your Stay</a>
+      <a href="#rooms" class="btn-outline">Explore Rooms</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-item">
+    <span class="stats-num">24h</span>
+    <span class="stats-label">Security Service</span>
+  </div>
+  <div class="stats-item">
+    <span class="stats-num">4+</span>
+    <span class="stats-label">Room Categories</span>
+  </div>
+  <div class="stats-item">
+    <span class="stats-num">3.1</span>
+    <span class="stats-label">km to LaGuardia</span>
+  </div>
+  <div class="stats-item">
+    <span class="stats-num">7</span>
+    <span class="stats-label">km to Midtown NYC</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <div class="about-img"></div>
+        <div class="about-img-accent"></div>
+        <div class="about-badge">
+          <strong>NYC</strong>
+          <span>Queens</span>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <span class="section-eyebrow">Welcome</span>
+        <h2 class="section-title">A Refined Stay<br>in the Heart of <em>Queens</em></h2>
+        <div class="divider"></div>
+        <p>Experience the quiet elegance of The Queens Hotel — a boutique property in the vibrant Queens neighborhood of New York City. Offering personalized service, modern comforts, and an unbeatable location, we are your ideal base for exploring all that the city has to offer.</p>
+        <p>Our guests enjoy round-the-clock security, a 24-hour front desk, and beautifully appointed rooms designed for both comfort and style. Whether you're in town for business or leisure, The Queens Hotel delivers an experience worth returning to.</p>
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="about-feature-icon">🔐</div>
+            <div class="about-feature-label">24h Security</div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">🛗</div>
+            <div class="about-feature-label">Elevator Access</div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">📦</div>
+            <div class="about-feature-label">Safety Deposit</div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">📶</div>
+            <div class="about-feature-label">Free WiFi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROOMS -->
+<section class="rooms" id="rooms">
+  <div class="container">
+    <div class="rooms-header reveal">
+      <span class="section-eyebrow">Accommodations</span>
+      <h2 class="section-title">Our <em>Rooms</em> &amp; Suites</h2>
+      <div class="divider"></div>
+      <p style="color:rgba(245,242,238,0.6); font-size:15px; font-weight:300; max-width:500px; margin: 0 auto; line-height:1.8;">Each room is crafted to provide exceptional comfort, blending modern amenities with thoughtful design for the perfect New York retreat.</p>
+    </div>
+  </div>
+  <div class="rooms-grid reveal">
+    <div class="room-card">
+      <div class="room-img"></div>
+      <div class="room-overlay">
+        <span class="room-tag">Signature Room</span>
+        <h3 class="room-name">King Room</h3>
+        <a href="#book" class="room-book">Book This Room</a>
+      </div>
+    </div>
+    <div class="room-card">
+      <div class="room-img"></div>
+      <div class="room-overlay">
+        <span class="room-tag">Extended Stay</span>
+        <h3 class="room-name">King Room with Kitchen</h3>
+        <a href="#book" class="room-book">Book This Room</a>
+      </div>
+    </div>
+    <div class="room-card">
+      <div class="room-img"></div>
+      <div class="room-overlay">
+        <span class="room-tag">Classic</span>
+        <h3 class="room-name">Double Room</h3>
+        <a href="#book" class="room-book">Book This Room</a>
+      </div>
+    </div>
+    <div class="room-card">
+      <div class="room-img"></div>
+      <div class="room-overlay">
+        <span class="room-tag">Premium Suite</span>
+        <h3 class="room-name">Presidential King Suite</h3>
+        <a href="#book" class="room-book">Book This Room</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AMENITIES -->
+<section class="amenities" id="amenities">
+  <div class="container">
+    <div class="amenities-grid">
+      <div class="amenities-img reveal"></div>
+      <div class="reveal">
+        <span class="section-eyebrow">Facilities</span>
+        <h2 class="section-title">Everything You<br><em>Need &amp; More</em></h2>
+        <div class="divider"></div>
+
+        <div class="amenity-group">
+          <div class="amenity-group-title">Bathroom</div>
+          <div class="amenity-list">
+            <span class="amenity-tag">Bathtub</span>
+            <span class="amenity-tag">Shower</span>
+            <span class="amenity-tag">Separate Toilet</span>
+            <span class="amenity-tag">Hairdryer</span>
+            <span class="amenity-tag">Free Toiletries</span>
+            <span class="amenity-tag">Towels & Linens</span>
+          </div>
+        </div>
+
+        <div class="amenity-group">
+          <div class="amenity-group-title">Room Amenities</div>
+          <div class="amenity-list">
+            <span class="amenity-tag">Flat-screen TV</span>
+            <span class="amenity-tag">Satellite Channels</span>
+            <span class="amenity-tag">Air Conditioning</span>
+            <span class="amenity-tag">Heating</span>
+            <span class="amenity-tag">Desk</span>
+            <span class="amenity-tag">Wardrobe</span>
+            <span class="amenity-tag">Iron</span>
+            <span class="amenity-tag">Bedside Sockets</span>
+          </div>
+        </div>
+
+        <div class="amenity-group">
+          <div class="amenity-group-title">Safety & Security</div>
+          <div class="amenity-list">
+            <span class="amenity-tag">24-Hour Security</span>
+            <span class="amenity-tag">CCTV</span>
+            <span class="amenity-tag">Smoke Alarms</span>
+            <span class="amenity-tag">Fire Extinguishers</span>
+            <span class="amenity-tag">Key Card Access</span>
+            <span class="amenity-tag">Safe / Deposit Box</span>
+          </div>
+        </div>
+
+        <div class="amenity-group">
+          <div class="amenity-group-title">General</div>
+          <div class="amenity-list">
+            <span class="amenity-tag">Free WiFi</span>
+            <span class="amenity-tag">Elevator</span>
+            <span class="amenity-tag">ATM On-site</span>
+            <span class="amenity-tag">Non-smoking</span>
+            <span class="amenity-tag">Adults Only</span>
+            <span class="amenity-tag">Multilingual Staff</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="location" id="location">
+  <div class="container">
+    <div class="location-grid">
+      <div class="reveal">
+        <span class="section-eyebrow">Location</span>
+        <h2 class="section-title">Perfectly<br><em>Positioned</em></h2>
+        <div class="divider"></div>
+        <p class="location-address">65-15 Queens Blvd,<br>Queens, New York 11377</p>
+        <p class="location-desc">Nestled on Queens Boulevard, our hotel places you just minutes from the 61st Street-Woodside subway station, providing effortless access to all of Manhattan and beyond. LaGuardia Airport is a mere 3.1 km away, making arrivals and departures seamless.</p>
+
+        <div class="nearby-section">
+          <div class="nearby-title">What's Nearby</div>
+          <div class="nearby-grid">
+            <div>
+              <div class="nearby-item"><span class="nearby-name">Bus Stop (65th Pl & QB)</span><span class="nearby-dist">200 m</span></div>
+              <div class="nearby-item"><span class="nearby-name">Dunkin' Café/Bar</span><span class="nearby-dist">200 m</span></div>
+              <div class="nearby-item"><span class="nearby-name">Subway (61st St–Woodside)</span><span class="nearby-dist">550 m</span></div>
+              <div class="nearby-item"><span class="nearby-name">Museum of Moving Image</span><span class="nearby-dist">2.7 km</span></div>
+            </div>
+            <div>
+              <div class="nearby-item"><span class="nearby-name">LaGuardia Airport</span><span class="nearby-dist">3.1 km</span></div>
+              <div class="nearby-item"><span class="nearby-name">Rockefeller Center</span><span class="nearby-dist">7 km</span></div>
+              <div class="nearby-item"><span class="nearby-name">Central Park</span><span class="nearby-dist">7 km</span></div>
+              <div class="nearby-item"><span class="nearby-name">JFK International Airport</span><span class="nearby-dist">11 km</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="map-placeholder">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1!2d-73.9005!3d40.7448!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25f5c3b24b50f%3A0x1c9b4e4c7e8c9c!2s65-15%20Queens%20Blvd%2C%20Queens%2C%20NY%2011377!5e0!3m2!1sen!2sus!4v1"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="book">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="section-eyebrow">Reserve Today</span>
+      <h2 class="section-title">Plan an Unforgettable<br>Stay in <em>Queens</em></h2>
+      <p>We'll help you craft the perfect New York experience within your budget. Your home away from home awaits at The Queens Hotel.</p>
+      <div class="cta-actions">
+        <a href="tel:+1-000-000-0000" class="btn-outline">Call Us</a>
+        <a href="mailto:reservations@queenshotelny.com" class="btn-primary">Book Your Stay</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">The Queens Hotel</a>
+        <p>A boutique hotel offering modern comforts and warm hospitality in the heart of Queens, New York City.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Explore</div>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#rooms">Rooms & Suites</a></li>
+          <li><a href="#amenities">Facilities</a></li>
+          <li><a href="#location">Location</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Rooms</div>
+        <ul>
+          <li><a href="#book">King Room</a></li>
+          <li><a href="#book">King with Kitchen</a></li>
+          <li><a href="#book">Double Room</a></li>
+          <li><a href="#book">Presidential Suite</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <ul>
+          <li><a href="#">65-15 Queens Blvd</a></li>
+          <li><a href="#">Queens, NY 11377</a></li>
+          <li><a href="tel:+1-000-000-0000">+1 (000) 000-0000</a></li>
+          <li><a href="mailto:info@queenshotelny.com">info@queenshotelny.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 The Queens Hotel, New York. All rights reserved.</p>
+      <p>Privacy Policy · Terms of Service</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
